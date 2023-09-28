@@ -21,7 +21,7 @@
     <div class="d-flex flex-column px-3 h-75">
         <textarea placeholder="¿Qué sucedió hoy"></textarea>
     </div>
-    <Fab />
+    <Fab icon="fa-save" />
     <img src="https://www.robertlandscapes.com/wp-content/uploads/2014/11/landscape-322100_1280.jpg" alt="entry-picture"
         class="img-thumbnail">
 </template>
