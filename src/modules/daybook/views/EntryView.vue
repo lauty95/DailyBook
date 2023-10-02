@@ -25,12 +25,12 @@
         <img src="https://www.robertlandscapes.com/wp-content/uploads/2014/11/landscape-322100_1280.jpg" alt="entry-picture"
             class="img-thumbnail">
     </template>
-    <Fab icon="fa-save" />
+    <Fab icon="fa-save" @on:click="saveEntry" />
 </template>
 
 <script>
 import { defineAsyncComponent } from 'vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import getDayMonthYear from '../helpers/getDayMonthYear'
 
 export default {
@@ -45,7 +45,7 @@ export default {
     },
     computed: {
         ...mapGetters({
-            getEntriesById: 'journal/getEntriesById'
+            getEntriesById: 'journal/getEntriesById',
         }),
         day() {
             const { day } = getDayMonthYear(this.entry.date)
@@ -61,10 +61,16 @@ export default {
         }
     },
     methods: {
+        ...mapActions({
+            updateEntry: 'journal/updateEntry',
+        }),
         loadEntry() {
             const entry = this.getEntriesById(this.id)
             if (!entry) this.$router.push({ name: 'no-entry' })
             this.entry = entry
+        },
+        async saveEntry() {
+            await this.updateEntry(this.entry)
         }
     },
     data() {
@@ -74,7 +80,6 @@ export default {
     },
     created() {
         this.loadEntry()
-        console.log(this.entry)
     },
     watch: {
         id() {
