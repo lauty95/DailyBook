@@ -9,6 +9,12 @@ export const updateEntry = (state, data) => {
     state.isLoading = false
 }
 
-export const addEntry = (/*state*/) => {
+export const addEntry = (state, data) => {
+    state.entries = [data, ...state.entries]
+    state.isLoading = false
+}
 
+export const deleteEntry = (state, id) => {
+    state.entries = state.entries.filter(entry => entry.id !== id)
+    state.isLoading = false
 }

@@ -8,7 +8,7 @@
             </div>
 
             <div>
-                <button class="btn btn-danger mx-2">
+                <button v-if="entry.id" class="btn btn-danger mx-2" @click="onDeleteEntry">
                     Borrar
                     <i class="fa fa-trash-alt"></i>
                 </button>
@@ -56,21 +56,42 @@ export default {
             return month
         },
         yearDay() {
-            const { yearDay } = getDayMonthYear(this.entry.date)
-            return yearDay
+            const { year } = getDayMonthYear(this.entry.date)
+            console.log(year)
+            return year
         }
     },
     methods: {
         ...mapActions({
             updateEntry: 'journal/updateEntry',
+            createEntry: 'journal/createEntry',
+            deleteEntry: 'journal/deleteEntry',
         }),
         loadEntry() {
-            const entry = this.getEntriesById(this.id)
-            if (!entry) this.$router.push({ name: 'no-entry' })
+            let entry;
+            if (this.id === "new") {
+                entry = {
+                    text: "",
+                    date: new Date().getTime()
+                }
+            } else {
+                entry = this.getEntriesById(this.id)
+                if (!entry) this.$router.push({ name: 'no-entry' })
+            }
             this.entry = entry
         },
         async saveEntry() {
-            await this.updateEntry(this.entry)
+            if (this.entry.id) {
+                await this.updateEntry(this.entry)
+            } else {
+                const id = await this.createEntry(this.entry)
+                if (!id) this.$router.push({ name: 'no-entry' })
+                else this.$router.push({ name: 'entry', params: { id } })
+            }
+        },
+        async onDeleteEntry() {
+            this.deleteEntry(this.entry.id)
+            this.$router.push({ name: 'no-entry' })
         }
     },
     data() {
