@@ -10,7 +10,6 @@ const uploadImage = async (file) => {
         const { data } = await axios.post(url, formData)
         return data.secure_url
     } catch (err) {
-        console.log("Error al cargar la imagen", err)
         return null
     }
 }

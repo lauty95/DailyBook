@@ -61,7 +61,6 @@ export default {
         },
         yearDay() {
             const { year } = getDayMonthYear(this.entry.date)
-            console.log(year)
             return year
         }
     },
